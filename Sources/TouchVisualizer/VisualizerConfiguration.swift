@@ -1,15 +1,11 @@
-//
-//  Configuration.swift
-//  TouchVisualizer
-//
-
 #if os(iOS)
 import UIKit
 #endif
 
-public struct Configuration {
+public struct VisualizerConfiguration {
     private struct Constants {
         static let defaultColor = UIColor(red: 52.0/255.0, green: 152.0/255.0, blue: 219.0/255.0, alpha: 0.8)
+        static let defaultSize = CGSize(width: 60.0, height: 60.0)
     }
 
     /**
@@ -19,7 +15,7 @@ public struct Configuration {
 
     // Image of touch points
     public var image: UIImage? = {
-        let rect = CGRect(x: 0.0, y: 0.0, width: 60.0, height: 60.0)
+        let rect = CGRect(x: 0.0, y: 0.0, width: Constants.defaultSize.width, height:Constants.defaultSize.height)
 
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
         let contextRef = UIGraphicsGetCurrentContext()
@@ -34,7 +30,7 @@ public struct Configuration {
     /**
     Default touch point size. If `showsTouchRadius` is enabled, this value is ignored
     */
-    public var defaultSize = CGSize(width: 60.0, height: 60.0)
+    public var defaultSize = Constants.defaultSize
 
     /**
     Shows touch duration.
@@ -50,7 +46,14 @@ public struct Configuration {
     /**
     Shows log. This will affect performance. Make sure showing logs only in development environment
     */
-    public var showsLog = false
+    public var showsLog : Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }
+      
 
     public init(){}
 }

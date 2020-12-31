@@ -1,21 +1,18 @@
-//
-//  TouchView.swift
-//  TouchVisualizer
-//
-
+#if os(iOS)
 import UIKit
+#endif
 
 final public class TouchView: UIImageView {
     
     // MARK: - Public Variables
     internal weak var touch: UITouch?
     private weak var timer: Timer?
-    private var _config: Configuration
+    private var _config: VisualizerConfiguration
     private var previousRatio: CGFloat = 1.0
     private var startDate: Date?
     private var lastTimeString: String!
     
-    public var config: Configuration {
+    public var config: VisualizerConfiguration {
         get { return _config }
         set (value) {
             _config = value
@@ -48,7 +45,7 @@ final public class TouchView: UIImageView {
     }
     
     override init(frame: CGRect) {
-        _config = Configuration()
+        _config = VisualizerConfiguration()
         super.init(frame: frame)
         
         self.frame = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: _config.defaultSize)

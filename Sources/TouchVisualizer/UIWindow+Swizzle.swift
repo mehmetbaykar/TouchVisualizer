@@ -1,13 +1,9 @@
-//
-//  UIWindow+Swizzle.swift
-//  TouchVisualizer
-//
-
+#if os(iOS)
 import UIKit
+#endif
 
 fileprivate var isSwizzled = false
 
-@available(iOS 8.0, *)
 extension UIWindow {
 	
 	public func swizzle() {

@@ -1,16 +1,13 @@
-//
-//  TouchVisualizer.swift
-//  TouchVisualizer
-//
-
+#if os(iOS)
 import UIKit
+#endif
 
 final public class Visualizer:NSObject {
     
     // MARK: - Public Variables
     static public let sharedInstance = Visualizer()
     fileprivate var enabled = false
-    fileprivate var config: Configuration!
+    fileprivate var config: VisualizerConfiguration!
     fileprivate var touchViews = [TouchView]()
     fileprivate var previousLog = ""
     
@@ -64,7 +61,7 @@ extension Visualizer {
     
     // MARK: - Start and Stop functions
     
-    public class func start(_ config: Configuration = Configuration()) {
+    public class func start(_ config: VisualizerConfiguration = VisualizerConfiguration()) {
         
         if config.showsLog {
             print("Visualizer start...")
@@ -215,19 +212,17 @@ extension Visualizer {
             
             var phase: String!
             switch touch.phase {
-            case .began: phase = "B"
-            case .moved: phase = "M"
-            case .stationary: phase = "S"
-            case .ended: phase = "E"
-            case .cancelled: phase = "C"
+            case .began: phase = "Began"
+            case .moved: phase = "Moved"
+            case .stationary: phase = "Stationary"
+            case .ended: phase = "Eneded"
+            case .cancelled: phase = "Cancelled"
             case .regionEntered:
-                print("regionEntered")
-                
-                print("regionEntered")
+                phase = "Region Entered"
             case .regionMoved:
-                print("regionMoved")
+                phase = "Region Moved"
             case .regionExited:
-                print("regionExited")
+                phase = "Region Exited"
             default:
                 break
             }
