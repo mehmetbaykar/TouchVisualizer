@@ -77,6 +77,7 @@ extension Visualizer {
                 }
             }
         }
+        UIApplication.shared.keyWindow?.swizzle()
         if config.showsLog {
             print("started !")
         }
