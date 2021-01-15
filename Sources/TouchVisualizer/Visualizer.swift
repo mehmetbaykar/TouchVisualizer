@@ -102,6 +102,9 @@ extension Visualizer {
         return touches
     }
     
+    public class func swizzleWindowIfNeed(){
+        UIApplication.shared.keyWindow?.swizzle()
+    }
     // MARK: - Dequeue and locating TouchViews and handling events
     private func dequeueTouchView() -> TouchView {
         var touchView: TouchView?
