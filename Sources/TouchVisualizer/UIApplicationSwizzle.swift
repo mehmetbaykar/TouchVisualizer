@@ -1,8 +1,7 @@
-//
- //  UIApplication+Swizzle.swift
- //  TouchVisualizer
- //
- import UIKit
+#if os(iOS)
+import UIKit
+#endif
+
 
  // MARK: - Swizzle
  extension UIApplication {
