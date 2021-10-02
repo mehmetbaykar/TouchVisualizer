@@ -5,7 +5,11 @@ import UIKit
 final public class Visualizer:NSObject {
     
     // MARK: - Public Variables
-    static public let sharedInstance = Visualizer()
+    static public let sharedInstance: Visualizer = {
+         UIApplication.swizzle()
+         return Visualizer()
+     }()
+    
     fileprivate var enabled = false
     fileprivate var config: VisualizerConfiguration!
     fileprivate var touchViews = [TouchView]()
@@ -17,10 +21,6 @@ final public class Visualizer:NSObject {
         NotificationCenter
             .default
             .addObserver(self, selector: #selector(Visualizer.orientationDidChangeNotification(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
-        
-        NotificationCenter
-            .default
-            .addObserver(self, selector: #selector(Visualizer.applicationDidBecomeActiveNotification(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
         
         UIDevice
             .current
@@ -36,9 +36,6 @@ final public class Visualizer:NSObject {
     }
     
     // MARK: - Helper Functions
-    @objc internal func applicationDidBecomeActiveNotification(_ notification: Notification) {
-        UIApplication.shared.keyWindow?.swizzle()
-    }
     
     @objc internal func orientationDidChangeNotification(_ notification: Notification) {
         let instance = Visualizer.sharedInstance
@@ -77,7 +74,6 @@ extension Visualizer {
                 }
             }
         }
-        UIApplication.shared.keyWindow?.swizzle()
         if config.showsLog {
             print("started !")
         }
@@ -102,9 +98,7 @@ extension Visualizer {
         return touches
     }
     
-    public class func swizzleWindowIfNeed(){
-        UIApplication.shared.keyWindow?.swizzle()
-    }
+
     // MARK: - Dequeue and locating TouchViews and handling events
     private func dequeueTouchView() -> TouchView {
         var touchView: TouchView?
@@ -144,6 +138,13 @@ extension Visualizer {
         
         var topWindow = UIApplication.shared.keyWindow!
         for window in UIApplication.shared.windows {
+            
+            // Case where webview brings up a fake empty keyboard when displaing a PDF on iPad and keeping it up until a keyboard is actually needed/used
+             // Affects iOS 12, 13, 14
+             if String(describing: type(of: window)) == "UIRemoteKeyboardWindow" && window.subviews.first?.subviews.first?.frame.size.height == 0 {
+                 continue
+             }
+            
             if window.isHidden == false && window.windowLevel > topWindow.windowLevel {
                 topWindow = window
             }
